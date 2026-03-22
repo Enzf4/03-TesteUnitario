@@ -44,8 +44,12 @@ public class Conta
     /// </summary>
     public void Depositar(decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0)
+            throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
+        if (!Ativa)
+            throw new InvalidOperationException("A conta está inativa.");
+
+        Saldo += valor;
     }
 
     /// <summary>
@@ -58,8 +62,14 @@ public class Conta
     /// </summary>
     public void Sacar(decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0)
+            throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
+        if (!Ativa)
+            throw new InvalidOperationException("A conta está inativa.");
+        if (valor > Saldo)
+            throw new InvalidOperationException("Saldo insuficiente.");
+
+        Saldo -= valor;
     }
 
     /// <summary>
@@ -72,8 +82,17 @@ public class Conta
     /// </summary>
     public void Transferir(Conta destino, decimal valor)
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (valor <= 0)
+            throw new ArgumentException("O valor deve ser maior que zero.", nameof(valor));
+        if (!Ativa)
+            throw new InvalidOperationException("A conta de origem está inativa.");
+        if (!destino.Ativa)
+            throw new InvalidOperationException("A conta de destino está inativa.");
+        if (valor > Saldo)
+            throw new InvalidOperationException("Saldo insuficiente.");
+
+        Saldo -= valor;
+        destino.Saldo += valor;
     }
 
     /// <summary>
@@ -85,7 +104,11 @@ public class Conta
     /// </summary>
     public void Encerrar()
     {
-        // TODO: Implemente usando TDD
-        throw new NotImplementedException();
+        if (!Ativa)
+            throw new InvalidOperationException("A conta já está inativa.");
+        if (Saldo != 0)
+            throw new InvalidOperationException("A conta deve ter saldo zero para ser encerrada.");
+
+        Ativa = false;
     }
 }
